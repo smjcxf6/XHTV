@@ -36,6 +36,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.github.anilbeesetti.nextlib.media3ext.ffdecoder.NextRenderersFactory;
+import io.github.peerless2012.ass.media.AssHandler;
+import io.github.peerless2012.ass.media.parser.AssSubtitleParserFactory;
 
 public class ExoUtil {
 
@@ -54,11 +56,11 @@ public class ExoUtil {
     }
 
     public static RenderersFactory buildRenderersFactory(int renderMode) {
-        return new NextRenderersFactory(App.get()).setEnableDecoderFallback(true).setExtensionRendererMode(renderMode);
+        return new NextRenderersFactory(App.get()).setAudioPrefer(Setting.isAudioPrefer()).setEnableDecoderFallback(true).setExtensionRendererMode(renderMode);
     }
 
-    public static MediaSource.Factory buildMediaSourceFactory() {
-        return new MediaSourceFactory();
+    public static MediaSource.Factory buildMediaSourceFactory(AssHandler assHandler, AssSubtitleParserFactory subtitleParserFactory) {
+        return new MediaSourceFactory(assHandler, subtitleParserFactory);
     }
 
     public static CaptionStyleCompat getCaptionStyle() {
@@ -104,7 +106,7 @@ public class ExoUtil {
     }
 
     public static String getMimeType(int errorCode) {
-        if (errorCode == PlaybackException.ERROR_CODE_PARSING_MANIFEST_UNSUPPORTED || errorCode == PlaybackException.ERROR_CODE_PARSING_MANIFEST_MALFORMED) return MimeTypes.APPLICATION_SCTE35;
+        if (errorCode == PlaybackException.ERROR_CODE_PARSING_MANIFEST_UNSUPPORTED || errorCode == PlaybackException.ERROR_CODE_PARSING_MANIFEST_MALFORMED) return MimeTypes.APPLICATION_OCTET;
         if (errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED || errorCode == PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED || errorCode == PlaybackException.ERROR_CODE_IO_UNSPECIFIED) return MimeTypes.APPLICATION_M3U8;
         return null;
     }
@@ -118,7 +120,8 @@ public class ExoUtil {
 //        builder.setForceUseRtpTcp(Setting.getRtsp() == 1);
 //        builder.setAds(Sniffer.getRegex(uri));
         builder.setMediaId(uri.toString());
-//        builder.setDecode(decode);
+        builder.setImageDurationMs(15000);
+        builder.setDecode(decode);
         return builder.build();
     }
 
