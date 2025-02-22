@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import androidx.annotation.NonNull;
 
 import com.fongmi.android.tv.App;
+import com.fongmi.android.tv.Setting;
 import com.fongmi.android.tv.gson.FilterAdapter;
 import com.fongmi.android.tv.gson.MsgAdapter;
 import com.fongmi.android.tv.gson.UrlAdapter;
@@ -66,6 +67,8 @@ public class Result implements Parcelable {
     private String flag;
     @SerializedName("desc")
     private String desc;
+    @SerializedName("danmaku")
+    private String danmaku;
     @SerializedName("format")
     private String format;
     @SerializedName("click")
@@ -226,6 +229,10 @@ public class Result implements Parcelable {
 
     public String getDesc() {
         return TextUtils.isEmpty(desc) ? "" : desc;
+    }
+
+    public String getDanmaku() {
+        return !Setting.isDanmakuLoad() || TextUtils.isEmpty(danmaku) ? "" : danmaku;
     }
 
     public String getFormat() {
