@@ -2,48 +2,47 @@ package com.fongmi.android.tv.bean;
 
 import android.text.TextUtils;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.Text;
-import org.simpleframework.xml.core.Persister;
+import com.google.gson.annotations.SerializedName;
 
-import java.util.Collections;
 import java.util.List;
 
-@Root(name = "i", strict = false)
 public class Danmaku {
 
-    @ElementList(entry = "d", required = false, inline = true)
-    private List<Data> data;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("url")
+    private String url;
 
-    public static Danmaku fromXml(String str) {
-        try {
-            return new Persister().read(Danmaku.class, str);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Danmaku();
-        }
+    private boolean selected;
+
+    public static List<Danmaku> from(String path) {
+        Danmaku danmaku = new Danmaku();
+        danmaku.setName(path);
+        danmaku.setUrl(path);
+        return List.of(danmaku);
     }
 
-    public List<Data> getData() {
-        return data == null ? Collections.emptyList() : data;
+    public String getName() {
+        return TextUtils.isEmpty(name) ? getUrl() : name;
     }
 
-    public static class Data {
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        @Attribute(name = "p", required = false)
-        public String param;
+    public String getUrl() {
+        return TextUtils.isEmpty(url) ? "" : url;
+    }
 
-        @Text(required = false)
-        public String text;
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-        public String getParam() {
-            return TextUtils.isEmpty(param) ? "" : param;
-        }
+    public boolean isSelected() {
+        return selected;
+    }
 
-        public String getText() {
-            return TextUtils.isEmpty(text) ? "" : text;
-        }
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }
