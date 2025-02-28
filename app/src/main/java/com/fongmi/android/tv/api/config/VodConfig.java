@@ -114,9 +114,9 @@ public class VodConfig {
     private void loadConfig(Callback callback) {
         try {
             OkHttp.cancel("vod");
-           // 优先使用 config.getUrl()
             String url = !TextUtils.isEmpty(config.getUrl()) ? config.getUrl() : newSourceUrl;
-            checkJson(Json.parse(Decoder.getJson(url)).getAsJsonObject(), callback);
+            String tag = "vod";  // 添加 tag 参数
+            checkJson(Json.parse(Decoder.getJson(url, tag)).getAsJsonObject(), callback);
         } catch (Throwable e) {
             if (TextUtils.isEmpty(newSourceUrl)) App.post(() -> callback.error(""));
             else loadCache(callback, e);
