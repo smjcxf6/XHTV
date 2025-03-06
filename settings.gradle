@@ -29,4 +29,4 @@ include ':chaquo'
 include ':quickjs'
 rootProject.name = "TV"
 gradle.ext.androidxMediaModulePrefix = 'media-'
-apply from: file("/home/runner/work/TVBoxOSC/TVBoxOSC/TVBoxOSC/core_settings.gradle")
+apply from: file("/home/runner/work/XHYSosc/XHYSosc/XHYSosc/core_settings.gradle")
