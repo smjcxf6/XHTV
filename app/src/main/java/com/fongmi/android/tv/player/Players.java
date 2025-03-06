@@ -135,7 +135,7 @@ public class Players implements Player.Listener, ParseCallback, DrawHandler.Call
         exoPlayer.setAudioAttributes(AudioAttributes.DEFAULT, true);
         exoPlayer.addAnalyticsListener(new EventLogger());
         exoPlayer.setHandleAudioBecomingNoisy(true);
-        view.setResizeMode(Setting.getRender());
+        //view.setRender(Setting.getRender());
         exoPlayer.setPlayWhenReady(true);
         exoPlayer.addListener(this);
         view.setPlayer(exoPlayer);
