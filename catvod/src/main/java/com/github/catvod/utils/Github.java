@@ -1,35 +1,29 @@
 package com.github.catvod.utils;
 
-import android.net.Uri;
-
-import com.github.catvod.net.OkHttp;
-
-import java.io.File;
-
 public class Github {
 
-    // public static final String URL = "https://xhys.lcjly.cn";
-
     private static String getUrl(String path, String name) {
-        return path + "/" + name;
+        return path + name;
     }
 
+    // 获取远程配置文件的内容
     public static String getJson(boolean dev, String name) {
-        return getUrl("https://xhys.lcjly.cn/update" , "release.json");
+        return getUrl("https://example.com/update", "release.json");
     }
 
-    public static String getApk(boolean dev, String name) {
-        return getUrl("https://mirror.ghproxy.com/https://github.com/xisohi/TVBoxOSC/releases/download/release", name + ".apk");
-    }
-
-    public static String getSo(String url) {
+    // 从远程配置文件中解析 APK 的基础下载链接
+    public static String getApkBaseUrlFromJson(String jsonString) {
         try {
-            File file = new File(Path.so(), Uri.parse(url).getLastPathSegment());
-            if (file.length() < 300) Path.write(file, OkHttp.newCall(url).execute().body().bytes());
-            return file.getAbsolutePath();
+            org.json.JSONObject json = new org.json.JSONObject(jsonString);
+            return json.getString("apkurl");
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
+    }
+
+    // 获取 APK 的完整下载链接
+    public static String getApkUrl(String apkBaseUrl, String name) {
+        return apkBaseUrl + name + ".apk";
     }
 }

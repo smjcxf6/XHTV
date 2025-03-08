@@ -44,7 +44,12 @@ public class Updater implements Download.Callback {
     }
 
     private String getApk() {
-        return Github.getApk(dev, BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_api + "-" + BuildConfig.FLAVOR_abi);
+        String jsonString = OkHttp.string(getJson());
+        String apkBaseUrl = Github.getApkBaseUrlFromJson(jsonString);
+        if (apkBaseUrl.isEmpty()) {
+            throw new RuntimeException("Failed to get APK base URL from remote config.");
+        }
+        return Github.getApkUrl(apkBaseUrl, BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_api + "-" + BuildConfig.FLAVOR_abi);
     }
 
     public Updater force() {
